@@ -24,17 +24,17 @@ AI(Gemini)支援を利用して作成。**実装→問題点発生→質問し�
 
 x86-64専用です。
 
-.NET 10ランタイムが必要です。ダウンロードはこちら→https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-10.0.9-windows-x64-installer
+.NET 10ランタイムが必要です。ダウンロードはこちら→[Microsoft公式](https://aka.ms/dotnet/10.0/windowsdesktop-runtime-win-x64.exe)
 
-Releaseページよりダウンロード後、任意のディレクトリで起動してください。
+1. Releaseページよりダウンロード後、任意のディレクトリで起動してください。
 
-起動したら、処理したいファイル・フォルダを一度にドンとドラッグアンドドロップしてください。
+2. 起動したら、処理したいファイル・フォルダを一度にドンとドラッグアンドドロップしてください。
 
-進捗バーが稼働し、そのファイル・フォルダ構造のまま、``Backup_YYYYmmdd.zip``がデスクトップ上に作成されます。
+→ 進捗バーが稼働し、そのファイル・フォルダ構造のまま、``Backup_YYYYmmdd.zip``がデスクトップ上に作成されます。
 
-その後、そのZIPをもとに``Backup_YYmmdd.iso``がこれまたデスクトップ上に作成されます。
+→ その後、そのZIPをもとに``Backup_YYmmdd.iso``がこれまたデスクトップ上に作成されます。
 
-あとは、煮るなり、ImgBurnで物理ディスクに焼くなり、してください。
+→ 完了！ あとは、煮るなり、ImgBurnで物理ディスクに焼くなり、してください。
 
 ## 考慮したこと・ハマったところ
 
