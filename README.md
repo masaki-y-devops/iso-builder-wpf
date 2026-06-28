@@ -24,7 +24,7 @@ AI(Gemini)支援を利用して作成。**実装→問題点発生→質問し�
 
 x86-64専用です。
 
-.NET 10ランタイムが必要です。ダウンロードはこちら→[Microsoft公式](https://aka.ms/dotnet/10.0/windowsdesktop-runtime-win-x64.exe)
+.NET 10ランタイムが必要です。ダウンロードはこちら → [Microsoft公式](https://aka.ms/dotnet/10.0/windowsdesktop-runtime-win-x64.exe)
 
 1. Releaseページよりダウンロード後、任意のディレクトリで起動してください。
 
