@@ -1,69 +1,69 @@
-## 概要
+## Overview
 
-ファイル・フォルダ（複数可）をドラッグアンドドロップすると、``Backup_(きょうの日付).zip``に圧縮して、
+When you drag and drop the file folder (socrial possible), you can compress it to `Backup_ (today's date).zip``,
 
-それをそっくりそのまま``Backup_(きょうの日付).iso``としてデスクトップに出力するアプリをつくってみた。
+I tried to create an app that outputs it to the desktop as "Backup_ (today's date). iso" as it is.
 
-AI(Gemini)支援を利用して作成。**実装→問題点発生→質問して潰す** 、を比較的高速で回すことができた。
+Created using AI (Gemini) support. **Implementation → Problems occurred → Ask questions and crush**, I was able to turn at a relatively high speed.
 
-## なぜ作ったか
+## Why did you make it?
 
-ファイルバックアップのために、内蔵HDD、USB HDDに加え、
+In addition to the internal hard drive, USB HDD, for file backup,
 
-**書き換え不能の特性が長所な光学ディスク(BD-R,一部M-DISC)をまとめ買いして使用**している。
+**Used by buying and using optical discs (BD-R, some M-DISCs) with their advantages in non-rewrite properties.
 
-従前、[ImgBurn](https://portableapps.com/apps/music_video/imgburn-portable)や[BurnAware](https://burnaware.com/)で手動でISOを作成していたが、
+Previously, ImgBurn (https://portableapps.com/apps/music_video/imgburn-portable) and [BurnAware] (https://burnaware.com/) created ISO manually,
 
-ディレクトリ階層が深くなると、ISO作成自体は可能なもののディスクに焼くときにエラーが多発、何枚も空のディスクを無駄にしてしまっていた。
+When the directory hierarchy deepened, ISO creation itself was possible, but when burning to the disk, there were many errors and many empty disks were was wasted.
 
-なので仕方なく、**手動でZIPにまとめてISO化、を行っていたが、これが非常に面倒。**
+So I had no choice,** I manually put it into ZIP and made it ISO, but this is very troublesome. **
 
-出力先はデスクトップでいいから、**D&Dしたらワンストップでこれらの定型作業をこなしてくれて、自分は空のディスクを用意して焼くだけでOK、な一部自動化を実現** した。
+The output destination is a desktop, so if you do these routine tasks in one stop after D & D, you can do these routine tasks in one stop, you can just prepare and burn an empty disk, and you have realized some automation**.
 
-## 使い方
+## How to use
 
-x86-64専用です。
+It is for x86-64 only.
 
-.NET 10ランタイムが必要です。ダウンロードはこちら → [Microsoft公式](https://aka.ms/dotnet/10.0/windowsdesktop-runtime-win-x64.exe)
+. NET 10 runtime is required. Download here → [Microsoft official] (https://aka.ms/dotnet/1.0/windowsdeskstop-runtime-win-x64.exe)
 
-1. Releaseページよりダウンロード後、任意のディレクトリで起動してください。
+1. Please download from the Release page and start it in any directory.
 
-2. 起動したら、処理したいファイル・フォルダを一度にドンとドラッグアンドドロップしてください。
+2. After starting, drag and drop the file folder you want to process with Don at once.
 
-→ 進捗バーが稼働し、そのファイル・フォルダ構造のまま、``Backup_YYYYmmdd.zip``がデスクトップ上に作成されます。
+→ The progress bar is up and `Backup_YYYYmmdd.zip` is created on the desktop while the file folder structure is still there.
 
-→ その後、そのZIPをもとに``Backup_YYmmdd.iso``がこれまたデスクトップ上に作成されます。
+→ After that, based on the ZIP, `Backup_YYmmdd.iso` will also be created on the desktop.
 
-→ 完了！ あとは、煮るなり、ImgBurnで物理ディスクに焼くなり、してください。
+→ Done! After that, cook it and bake it on a physical disk with ImgBurn.
 
-## 考慮したこと・ハマったところ
+## What I considered and what I was hooked
 
-### 進捗バーの各処理ごとの割り当て問題。
+### Assignment issues for each step of the progress bar.
 
-ISO作成のProgressをとることが難しいため、ZIP作成までを1ステップとし、99％まで占有させた。残りの1％はISO作成に割り当てた。
+Since it is difficult to obtain a progress of ISO creation, I made it a step up to ZIP creation and occupied up to 99%. The remaining one percent was allocated to ISO creation.
 
-### ``CancellationToken`` の実装時の機能的な問題点解決。
+###`Functional problem solving when implementing "CancellationToken``".
 
-チェック頻度を分割しないと、ZIP作成完了までキャンセルトークンのチェックが回ってこず、GUI上のボタンを押してもキャンセル処理ができない。
+If you do not split the check frequency, the cancellation token check will not be turned around until the ZIP creation is completed, and the cancellation process cannot be done even if you press the button on the GUI.
 
-そのため、細かなキャンセルトークンの発行を監視する目的で、ZIP作成を8KBおきのループに分割し、そのループの都度チェックを回す。
+Therefore, for the purpose of monitoring the issuance of detailed cancellation tokens, the ZIP creation is divided into a loop every 8KB, and the check is turned every time the loop is turned.
 
-### (地味に)ISOファイルのファイル名とラベル名が別物ということに気づかずに小一時間ハマった
+### (sorberly) I was hooked for a small hour without noticing that the file name and the label name of the ISO file are different
 
-独立したメソッド(``GetSaveZipPath``などコメントアウトしたものを含む)でファイル名を作って代入、のフローを考えていたが、
+I was thinking about the flow of assigning a file name with an independent method (including commented out such as `GetSaveZipPath``),
 
-ラベル名に拡張子は不要なので、代入時にいちいちその部分を除去する必要があるので本末転倒感があった。
+Since the extension is unnecessary for the label name, it is necessary to remove the part at the time of assignment, so there was a feeling of overturning the main end.
 
-そのため、メソッドの乱立を防ぐために、ラベル名の指定は``DateTime.Now:yyyyMMdd``として直接代入するアプローチに落ち着いた。
+Therefore, in order to prevent the protrusion of the method, the label name is specified as ``DateTime.Now:yyyyMMdd``, and settled on the approach of assigning it directly.
 
-### 完了時のデスクトップ通知。
+### Desktop notifications on completion.
 
-Windows11標準の通知センターを活用。
+Utilizing the Windows11 standard notification center.
 
-### partialクラスによるソースファイル分離。画面とロジックで分けてみた
+### Separate source files by partial class. I tried to divide it by screen and logic
 
-当初``MainWindow.xaml.cs``のみに記述し、スクロールが多くなり可読性が大幅に低下していた。
+Initially, it was described only in `MainWindow.xaml.cs``, scrolling increased and readability was greatly reduced.
 
-そのため、保存名生成メソッド、ZIP作成メソッド、ISO作成メソッドを``MainWindow.xaml.Core.cs``として分離。
+Therefore, the save name generation method, ZIP creation method, and ISO creation method are separated as ``MainWindow.xaml.Core.cs``.
 
-``partial``メソッドを用いて同一クラスを分割することで、保守性を保つプラクティスを体験できた。
+By using the ``partial's method to divide the same class, I was able to experience the practice of maintaining maintainability.
