@@ -10,7 +10,7 @@ Created using AI (Gemini) support. **Implementation → Problems occurred → As
 
 It is for x86-64 only.
 
-. NET 10 runtime is required. Download here → [Microsoft official] (https://aka.ms/dotnet/10/windowsdesktop-runtime-win-x64.exe)
+. NET 10 runtime is required. Download here → [Microsoft official] (aka.ms/dotnet/10/windowsdesktop-runtime-win-x64.exe)
 
 1. Please download from the Release page and start it in any directory.
 
